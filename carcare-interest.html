@@ -216,7 +216,7 @@
                             </ul>
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Generate Content
+                          Generate Content
                         </button>
                     </div>
                 </div>
@@ -401,6 +401,29 @@
         </div>
         
       </section>
+
+      <section>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLebel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header"></div>
+              <div class="modal-body">
+                <p id="interest_3" class="typewritter">
+                  Need somebody with expertise on automobiles regarding troubleshooting solutions like, diagnosing problems/errors present both visually $ within engine parts in order to figure out what's causing them (like lack of oil or power issues) &
+                  suggest required replacements while recording down details such fuel consumption type etc, First inquiry - "Car won't start although battery is full charged"
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismis="modal" onclick="closeModalAndRedirect()">Generate Email</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- <div class="spinner" style="display: none;"></div> -->
+      <div style="display: none; " id="busy"></div>
   
     </main><!-- End #main -->
   
@@ -432,6 +455,66 @@
   
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"></script>
+    <script>
+      function closeModalAndRedirect() {
+        //close the modal
+        $('#exampleModal').modal('hide');
+        $('#busy').css('display', 'block');
+
+        setTimeout(function() {
+          $('#busy').css('display', 'none')
+          window.location.href = 'carcare-email.html'
+        }, 3000);
+      }
+
+      async function generateContent() {
+        $('#travelModel').modal('hide');
+        const apiKey  = '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';
+        const userInput = document.getElementById('interest_3').value;
+        const loader = document.getElementById('busy');
+        loader.style.display = 'block';
+
+        const apiUrl = 'https://api.openai.com/v1/completions'; //Update the engine if needed
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        };
+        
+        const data = JSON.stringify({
+          'propmt': userInput,
+          'model': 'text-davinci-003',
+          'max_tokens': 100
+        });
+
+        try {
+          const response = await fetch(apiUrl, {
+              method: 'POST',
+              headers: headers,
+              body: data
+          });
+
+          if (!response.ok) {
+            throw new Error('Error fetching data from API')
+          }
+
+          const result = await response.json();
+          const generatedContent = result.choices(0).text;
+          console.log('success');
+          console.log('Data: ', generateContent);
+          loader.style.display = 'none';
+          window.location = 'carcare-email.html';
+
+        } catch (error) {
+          loader.style.display = 'none';
+          console.error('Error:', error);
+          window.location = 'carcare-email.html';
+        }
+      }
+    </script>
   
   </body>
 

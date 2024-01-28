@@ -1231,3 +1231,102 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+#busy {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  display: none;
+  background:  url("../img/loading_4.gif");
+  z-index: 1000;
+  height: 200px;
+  width: 200px;
+}
+
+p.typewritter{
+  overflow: hidden;
+  border-right: .15rem solid orange;
+  white-space: pre-line;
+  margin: 0 auto;
+  letter-spacing: .15rem;
+  animation: 
+          typing 3.5s steps(40, end),
+          blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+  from {width: 0}
+  to {width: 100%}
+}
+
+@keyframes blink-caret {
+  from, to {border-color: transparent;}
+  50% {border-color: orange;}
+}
+
+.spinner {
+  --t: 2500ms;
+  --animation: rotate var(--t) linear infinite;
+  --animation2: scale var(--t) infinite alternate;
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: var(--animation), var(--animation2);
+  position: absolute;
+  top: 60%;
+  left: 60%;
+  z-index: 10000;
+}
+
+.spinner::before,
+.spinner::after {
+  content: '';
+  position: absolute;
+}
+
+.spinner::before {
+  inset: 0;
+  border: 3px solid turquoise;
+  border-radius: 50%;
+  mask-image: conic-gradient(transparent 10%, black);
+  animation: borderScale var(--t) linear infinite alternate;
+}
+
+.spinner::after {
+  --r: 45deg;
+  --scale: 2;
+  width: 20%;
+  height: 20%;
+  background: 
+          radial-gradient(circle at 30% 35%, white 3px, transparent 0),
+          radial-gradient(circle at 70% 35%, white 3px, transparent 0),
+          radial-gradient(circle at top center, white 3px, transparent 0),
+          turquoise;
+  background-position: 0 0, 0 0, 0 1.25rem;
+  top: 0;
+  translate: 0 -50%;
+  rotate: 45deg;
+  animation: var(--animation) reverse, var(--animation2);
+  border-radius: 20%;
+}
+
+@keyframes rotate {
+  to {
+    rotate: calc(360deg + var(--r, 0deg));
+  }
+}
+
+@keyframes scale {
+  to {
+    scale: var(--scale, 0.5);
+  }
+}
+
+@keyframes borderScale {
+  to {
+    border: 6px solid turquoise;
+  }
+}
